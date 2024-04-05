@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UporabnikService} from "../../../services/uporabnik.service";
-import {Odgovor, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
+import {PodanOdgovor, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {CommonModule} from "@angular/common";
 
 @Component({
@@ -20,7 +20,7 @@ export class VprasalnikComponent implements OnInit {
 
   vprasanja: Vprasanje[];
   trenutnoVprasanje: Vprasanje;
-  trenutniOdgovori: Odgovor[] = [];
+  trenutniOdgovori: PodanOdgovor[] = [];
   steviloTock: number = 0;
   sifraUporabnika: string;
 
@@ -70,7 +70,7 @@ export class VprasalnikComponent implements OnInit {
 
   }
 
-  public checkBoxTicked(odgovor: Odgovor) {
+  public checkBoxTicked(odgovor: PodanOdgovor) {
     let najdenOdgovorIndex = this.trenutniOdgovori?.indexOf(odgovor);
     if (najdenOdgovorIndex && najdenOdgovorIndex > -1) {
       this.trenutniOdgovori.splice(najdenOdgovorIndex, 1);
