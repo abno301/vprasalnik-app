@@ -1,0 +1,10 @@
+<h1>Admin Pogled</h1>
+
+<div>
+  <input
+    style="display: none"
+    type="file" (change)="onFileChanged($event)"
+    #fileInput>
+  <button (click)="fileInput.click()">Izberi JSON Datoteko</button>
+  <button (click)="kreirajSejo()">Kreiraj Sejo</button>
+</div>
