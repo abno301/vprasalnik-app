@@ -22,6 +22,7 @@ export class VprasalnikComponent implements OnInit {
   trenutnoVprasanje: Vprasanje;
   trenutniOdgovori: Odgovor[] = [];
   steviloTock: number = 0;
+  sifraUporabnika: string;
 
   constructor(private uporabnikService: UporabnikService) {
   }
@@ -53,6 +54,10 @@ export class VprasalnikComponent implements OnInit {
     let trenutniIndex = this.vprasanja.findIndex(vprasanje => this.trenutnoVprasanje == vprasanje);
     let naslednjeVprasanje = this.vprasanja[trenutniIndex + 1];
 
+    //TODO je hardcoded na vprasanje id v1
+    if (this.trenutnoVprasanje.id == "v1") {
+      this.sifraUporabnika = odgovor;
+    }
     if (naslednjeVprasanje) {
       this.trenutnoVprasanje = naslednjeVprasanje;
 
