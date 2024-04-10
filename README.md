@@ -1,2 +1,2 @@
 # vprasalnik-app
-questionnare for philosophy faculty.
+Vprasalnik za filozofsko fakulteto UM.
