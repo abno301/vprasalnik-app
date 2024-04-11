@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {Vprasanja} from "../../../models/uporabnik.model";
+import {Seja} from "../../../models/admin.model";
+import {AdminService} from "../../../services/admin.service";
 
 @Component({
   selector: 'app-admin',
@@ -10,14 +13,18 @@ import { Component } from '@angular/core';
 export class AdminComponent {
 
   selectedFile: File;
+  vprasanjaSeje: Vprasanja;
 
+  constructor(private adminService: AdminService) {}
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsText(this.selectedFile, "UTF-8");
+
     fileReader.onload = () => {
       if (typeof fileReader.result === "string") {
-        console.log(JSON.parse(fileReader.result));
+        this.vprasanjaSeje = JSON.parse(fileReader.result);
+        alert("Vprasanja so bila uvozena uspesno!")
       }
     }
     fileReader.onerror = (error) => {
@@ -26,6 +33,22 @@ export class AdminComponent {
   }
 
   kreirajSejo() {
-    // upload code goes here
+    let sejaId = Math.floor(1000000 * Math.random());
+
+    let seja: Seja = {
+      id: sejaId,
+      vprasanja: this.vprasanjaSeje,
+      rezultati: []
+    }
+    // TODO Send session id and questions to backend
+
+    console.log("about to make a call")
+    this.adminService.kreirajSejo(seja).subscribe({
+      next: (value) => {
+        console.log("made a call.")
+        //do smth
+      },
+      complete: () => alert("Seja z id-jem " + sejaId + " je bila kreirana")
+    })
   }
 }
