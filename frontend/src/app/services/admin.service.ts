@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 })
 export class AdminService {
 
-  readonly SERVER_URL: string = "http://localhost:8080";
+  readonly SERVER_URL: string = "http://localhost:8080/admin";
   constructor(private httpClient: HttpClient) {}
 
   kreirajSejo(seja: Seja): Observable<Seja> {
