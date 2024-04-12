@@ -15,19 +15,28 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.get("/", (req, res) => {
-    res.json({ message: "Dobrodosli v Plohl app." });
+    res.json({message: "Dobrodosli v Plohl app."});
 });
 
 app.get("/admin.html", (req, res) => {
-   res.send("Dobrodosli admin!")
+    res.send("Dobrodosli admin!")
 });
 
 app.post("/seja", (req, res) => {
-    const seja = new Seja(req.body.id, "test", "1.1.2024", req.body.vprasanja, {})
+    const vprasanja = req.body.vprasanja.map(vprasanje => {
+        const podaniOdgovori = vprasanje.podaniOdgovori ?
+            vprasanje.podaniOdgovori.map(odgovor =>
+                new PodanOdgovor(odgovor.id, odgovor.idOdgovor, odgovor.odgovor, odgovor.tocke)
+            ) : [];
+        return new Vprasanje(vprasanje.id, vprasanje.idVprasanje, vprasanje.navodilo, vprasanje.tip, vprasanje.dovoljenjeNapredovanja, podaniOdgovori);
+    });
+
+    const seja = new Seja(req.body.id, "test", "1.1.2024", vprasanja, {});
     console.log(seja);
+
     res.send(req.body);
 });
 
@@ -63,5 +72,5 @@ function Vprasanje(id, idVprasanje, navodilo, tip, dovoljenjeNapredovanja, podan
     this.navodilo = navodilo;
     this.tip = tip;
     this.dovoljenjeNapredovanja = dovoljenjeNapredovanja || true;
-    this.podaniOdgovori = podaniOdgovori;
+    this.podaniOdgovori = podaniOdgovori || [];
 }

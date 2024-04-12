@@ -37,7 +37,7 @@ export class AdminComponent {
 
     let seja: Seja = {
       id: sejaId,
-      vprasanja: this.vprasanjaSeje,
+      vprasanja: this.vprasanjaSeje.vprasanja,
       rezultati: []
     }
     // TODO Send session id and questions to backend
