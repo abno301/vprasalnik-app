@@ -3,7 +3,7 @@ const config = require("../config");
 
 async function query(sql, params) {
     const connection = await mysql.createConnection(config.db);
-    console.log("Povezava z podatkovno bazo je bila uspesna!")
+    // console.log("Povezava z podatkovno bazo je bila uspesna!")
 
     const [results] = await connection.execute(sql, params);
     return results;

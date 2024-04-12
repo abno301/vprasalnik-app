@@ -1,21 +1,12 @@
 const db = require('./db');
 
 async function ustvariSejo(novaSeja) {
-    const vprasanja = novaSeja.vprasanja.map(vprasanje => {
-        const podaniOdgovori = vprasanje.podaniOdgovori ?
-            vprasanje.podaniOdgovori.map(odgovor =>
-                new PodanOdgovor(odgovor.id, odgovor.idOdgovor, odgovor.odgovor, odgovor.tocke)
-            ) : [];
-        return new Vprasanje(vprasanje.id, vprasanje.idVprasanje, vprasanje.navodilo, vprasanje.tip, vprasanje.dovoljenjeNapredovanja, podaniOdgovori);
-    });
-
-    // const constSeja = new Seja(novaSeja.id, "test", "1.1.2024", vprasanja, {});
-
+    //TODO check if id exists
     const result = await db.query(
         `INSERT INTO seja
-            (id, datum, naziv)
+            (datum, naziv)
             VALUES
-            (${novaSeja.id}, 'test', 'testNaziv')`
+            ('test', 'testNaziv')`
     );
 
     let message = "Error med kreiranjem nove seje.";
@@ -24,7 +15,51 @@ async function ustvariSejo(novaSeja) {
         message = "Nova seja uspesno kreirana!";
     }
 
+    for (const vprasanje of novaSeja.vprasanja) {
+       await ustvariVprasanje(result.insertId, vprasanje);
+    }
+
     return message;
+}
+
+async function ustvariVprasanje(sejaId, vprasanje) {
+    const dovoljenjeNapredovanja = vprasanje.dovoljenjeNapredovanja === undefined;
+
+    const result = await db.query(
+        `INSERT INTO vprasanje
+            (idVprasanje, navodilo, tip, dovoljenjeNapredovanja, seja_idSeja)
+            VALUES (?, ?, ?, ?, ?)`,
+        [vprasanje.id || null, vprasanje.navodilo, vprasanje.tip, dovoljenjeNapredovanja, sejaId]
+    );
+    let message = "Error med dodajanjem vprasanja seje.";
+
+    if (result.affectedRows) {
+        message = "Vprasanje seje dodano!";
+    }
+
+    if (vprasanje.odgovori) {
+        for (const odgovor of vprasanje.odgovori) {
+            await ustvariPodanOdgovor(result.insertId, odgovor);
+        }
+    }
+
+    // console.log(message);
+}
+
+async function ustvariPodanOdgovor(vprasanjeId, odgovor) {
+    const result = await db.query(
+        `INSERT INTO podanodgovor
+            (idOdgovor, odgovor, tocke, Vprasanje_idVprasanje)
+            VALUES (?, ?, ?, ?)`,
+        [odgovor.id, odgovor.zapis, odgovor.tocke || null, vprasanjeId]
+    );
+    let message = "Error med dodajanjem moznega odgovora vprasanja.";
+
+    if (result.affectedRows) {
+        message = "Mozen odgovor vprasanja dodan!";
+    }
+
+    // console.log(message);
 }
 
 function Seja(id, naziv, datum, vprasanja, rezultati) {
