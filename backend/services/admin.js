@@ -19,6 +19,8 @@ async function ustvariSejo(novaSeja) {
        await ustvariVprasanje(result.insertId, vprasanje);
     }
 
+    await posodobiAktivnoSejo(result.insertId);
+
     return message;
 }
 
@@ -62,34 +64,23 @@ async function ustvariPodanOdgovor(vprasanjeId, odgovor) {
     // console.log(message);
 }
 
-function Seja(id, naziv, datum, vprasanja, rezultati) {
-    this.id = id;
-    this.naziv = naziv;
-    this.datum = datum;
-    this.vprasanja = vprasanja;
-    this.rezultati = rezultati;
-}
+async function posodobiAktivnoSejo(sejaId) {
+    const result = await db.query(
+        `SELECT * FROM aktivnaseja`
+    );
 
-function Rezultat(id, uporabnikId, odgovori) {
-    this.id = id;
-    this.uporabnikId = uporabnikId;
-    this.odgovori = odgovori;
-}
+    let rezultat;
+    if (result.length <= 0) {
+        rezultat = await db.query(
+          `INSERT INTO aktivnaseja (sejaId) VALUES (${sejaId})`
+        );
+    } else {
+        rezultat = await db.query(
+            `UPDATE aktivnaseja SET sejaId=${sejaId} WHERE sejaId=${result[0].sejaId}`
+        )
+    }
+    console.log("Aktivna seja je seja z id-jem: " + sejaId);
 
-function PodanOdgovor(id, idOdgovor, odgovor, tocke) {
-    this.id = id;
-    this.idOdgovor = idOdgovor;
-    this.odgovor = odgovor;
-    this.tocke = tocke || 0;
-}
-
-function Vprasanje(id, idVprasanje, navodilo, tip, dovoljenjeNapredovanja, podaniOdgovori) {
-    this.id = id;
-    this.idVprasanje = idVprasanje || "";
-    this.navodilo = navodilo;
-    this.tip = tip;
-    this.dovoljenjeNapredovanja = dovoljenjeNapredovanja || true;
-    this.podaniOdgovori = podaniOdgovori || [];
 }
 
 

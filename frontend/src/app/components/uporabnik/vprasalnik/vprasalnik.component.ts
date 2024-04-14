@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UporabnikService} from "../../../services/uporabnik.service";
 import {PodanOdgovor, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {CommonModule} from "@angular/common";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {concatMap, of, switchMap} from "rxjs";
+import {Seja} from "../../../models/admin.model";
 
 @Component({
   selector: 'app-vprasalnik',
@@ -17,6 +20,8 @@ export class VprasalnikComponent implements OnInit {
 
   loading: boolean = false;
   dovoljenjeNapredovanja: boolean = true;
+  // @ts-ignore
+  trenutnaSeja: Seja;
 
   vprasanja: Vprasanje[];
   trenutnoVprasanje: Vprasanje;
@@ -24,11 +29,18 @@ export class VprasalnikComponent implements OnInit {
   steviloTock: number = 0;
   sifraUporabnika: string;
 
-  constructor(private uporabnikService: UporabnikService) {
+  constructor(private uporabnikService: UporabnikService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.loading = true;
+
+    this.route.paramMap.subscribe((source) => {
+      this.uporabnikService.dobiSejo(Number(source.get('sejaId'))).subscribe(value => {
+        this.trenutnaSeja = value;
+        // console.log(this.trenutnaSeja);
+      })
+    });
 
     this.uporabnikService.getNavodila().subscribe({
       next: (vprasanjaObject: Vprasanja) => {

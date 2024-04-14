@@ -2,21 +2,25 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const adminRouter = require("./routes/admin");
+const indexRouter = require("./routes/index");
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-const corsOptions = {
-    origin: "http://localhost:4200"
-};
+// const corsOptions = {
+//     origin: "http://localhost:4200",
+// };
 
+// app.options('*', cors());
+// app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use("/admin", adminRouter);
+app.use("/", indexRouter);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {

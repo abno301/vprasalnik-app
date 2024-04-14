@@ -7,10 +7,16 @@ import {Observable} from "rxjs";
 })
 export class UporabnikService {
 
+  readonly BACKEND_URL = "http://localhost:8080/";
+
   constructor(private httpClient: HttpClient) {}
 
   public getNavodila(): Observable<any> {
     return this.httpClient.get("../../assets/vprasanja.json");
+  }
+
+  public dobiSejo(sejaId: number): Observable<any> {
+    return this.httpClient.get(this.BACKEND_URL + "seja/" + sejaId)
   }
 
 }
