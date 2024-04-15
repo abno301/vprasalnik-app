@@ -19,11 +19,18 @@ async function dobiSejo(sejaId) {
                 GROUP BY 
                     seja.id`
         );
+
+        const jeAktivna = await db.query(
+            `SELECT sejaId FROM aktivnaseja`
+        )
+
+        console.log(jeAktivna);
         return {
             id: result[0].seja_id,
             datum: result[0].seja_datum,
             naziv: result[0].seja_naziv,
-            vprasanja: JSON.parse(result[0].vprasanja)
+            vprasanja: JSON.parse(result[0].vprasanja),
+            aktivnaSeja: jeAktivna[0].sejaId
         };
     } catch (err) {
         console.error(`Error med dobivanjem seje`, err.message);

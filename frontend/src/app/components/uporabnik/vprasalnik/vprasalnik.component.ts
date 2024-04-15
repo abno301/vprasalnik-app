@@ -20,8 +20,8 @@ export class VprasalnikComponent implements OnInit {
 
   loading: boolean = false;
   dovoljenjeNapredovanja: boolean = true;
-  // @ts-ignore
   trenutnaSeja: Seja;
+  jeAktivnaSeja: boolean = false;
 
   vprasanja: Vprasanje[];
   trenutnoVprasanje: Vprasanje;
@@ -36,25 +36,28 @@ export class VprasalnikComponent implements OnInit {
     this.loading = true;
 
     this.route.paramMap.subscribe((source) => {
-      this.uporabnikService.dobiSejo(Number(source.get('sejaId'))).subscribe(value => {
-        this.trenutnaSeja = value;
-        // console.log(this.trenutnaSeja);
-      })
-    });
+      this.uporabnikService.dobiSejo(Number(source.get('sejaId'))).subscribe({
+        next: (result) => {
+          if (result.aktivnaSeja == result.id) {
+            this.jeAktivnaSeja = true;
+          }
+          this.trenutnaSeja = result;
+        },
+        complete: () => this.loading = false
+      });
 
-    this.uporabnikService.getNavodila().subscribe({
-      next: (vprasanjaObject: Vprasanja) => {
-        this.vprasanja = vprasanjaObject.vprasanja;
+      this.uporabnikService.getNavodila().subscribe({
+        next: (vprasanjaObject: Vprasanja) => {
+          this.vprasanja = vprasanjaObject.vprasanja;
 
-        this.trenutnoVprasanje = vprasanjaObject.vprasanja[0];
-      },
-      complete: () => this.loading = false
+          this.trenutnoVprasanje = vprasanjaObject.vprasanja[0];
+        },
+        complete: () => this.loading = false
+      });
     });
   }
 
   public naslednjeVprasanje(odgovor: string) {
-    // console.log(this.trenutniOdgovori);
-
     let tocke = 0;
     if (this.trenutnoVprasanje.odgovori) {
       this.trenutniOdgovori.forEach(function (podanOdgovor) {
