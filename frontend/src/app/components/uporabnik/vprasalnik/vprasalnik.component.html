@@ -21,16 +21,16 @@
 
 <!--      TEXTBOX-->
       <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
-        <label for="{{ trenutnoVprasanje.id }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
-        <input #odgovor type="text" id="{{ trenutnoVprasanje.id }}" name="odgovor">
+        <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
+        <input #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
         <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
 <!--      TEXTAREA-->
       <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textarea].valueOf()">
-        <label for="{{ trenutnoVprasanje.id }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
-        <textarea #odgovor type="area" id="{{ trenutnoVprasanje.id }}" name="odgovor"></textarea>
+        <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
+        <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
 
         <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
@@ -40,9 +40,9 @@
       <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.radiobutton].valueOf()">
         <span>{{ trenutnoVprasanje.navodilo }}</span>
         <div>
-          <div *ngFor="let odgovor of trenutnoVprasanje.odgovori">
-            <input type="radio" id="{{ odgovor.id }}" value="{{ odgovor.zapis }}" (click)="checkBoxTicked(odgovor)">
-            <label for="{{ odgovor.id }}">{{ odgovor.zapis }}</label>
+          <div *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
+            <input type="radio" id="{{ odgovor.id }}" value="{{ odgovor.odgovor }}" (click)="checkBoxTicked(odgovor)">
+            <label for="{{ odgovor.id }}">{{ odgovor.odgovor }}</label>
           </div>
         </div>
 
@@ -55,9 +55,9 @@
         <span>{{ trenutnoVprasanje.navodilo }}</span>
 
         <div>
-          <div *ngFor="let odgovor of trenutnoVprasanje.odgovori">
-            <input type="checkbox" id="{{ odgovor.id }}" value="{{ odgovor.zapis }}" (click)="checkBoxTicked(odgovor)">
-            <label for="{{ odgovor.id }}">{{ odgovor.zapis }}</label>
+          <div *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
+            <input type="checkbox" id="{{ odgovor.id }}" value="{{ odgovor.odgovor }}" (click)="checkBoxTicked(odgovor)">
+            <label for="{{ odgovor.id }}">{{ odgovor.odgovor }}</label>
           </div>
         </div>
 

@@ -3,11 +3,11 @@ export interface Vprasanja {
 }
 
 export interface Vprasanje {
-  id?: string,
+  idVprasanje?: string,
   navodilo: string,
   tip: TipVprasanja,
   dovoljenjeNapredovanja?: boolean,
-  odgovori?: PodanOdgovor[]
+  podaniOdgovori?: PodanOdgovor[]
 }
 
 export enum TipVprasanja {
@@ -21,7 +21,7 @@ export enum TipVprasanja {
 
 export interface PodanOdgovor {
   id: number,
-  zapis: string,
+  odgovor: string,
   tocke: number
 }
 
