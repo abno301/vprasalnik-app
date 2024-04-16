@@ -3,7 +3,7 @@ export interface Vprasanja {
 }
 
 export interface Vprasanje {
-  idVprasanje?: string,
+  idVprasanje: string,
   navodilo: string,
   tip: TipVprasanja,
   dovoljenjeNapredovanja?: boolean,
@@ -26,11 +26,12 @@ export interface PodanOdgovor {
 }
 
 export interface Odgovor {
-  idVprasanja: number,
+  idVprasanja: string,
   odgovor: string
 }
 
 export interface Rezultat {
-  idUporabnika: number,
+  idUporabnika: string,
+  sejaId: number,
   odgovori: Odgovor[]
 }

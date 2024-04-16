@@ -1,5 +1,5 @@
 <ng-container *ngIf="!loading && jeAktivnaSeja">
-  <div>
+  <div *ngIf="!jeKonec">
 
     <div>
       <h1 class="text-4xl">Dobrodosli v Vprasalnik</h1>
@@ -23,7 +23,7 @@
       <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
         <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
         <input #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje(odgovor.value)">
+        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
@@ -32,7 +32,7 @@
         <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
         <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
 
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje(odgovor.value)">
+        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('odgovor.value')">
+        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('odgovor.value')">
+        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
@@ -70,11 +70,15 @@
         <span>{{ trenutnoVprasanje.navodilo }}</span>
         <span>{{ steviloTock }}</span>
 
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('odgovor.value')">
+        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
     </div>
+    <button [hidden]="!jeZadnjeVprasanje" (click)="zakljuci()">Zakljuci</button>
+  </div>
+  <div *ngIf="jeKonec">
+    <span>Vprasalnik ste zakljucili, hvala za sodelovanje!</span>
   </div>
 </ng-container>
 

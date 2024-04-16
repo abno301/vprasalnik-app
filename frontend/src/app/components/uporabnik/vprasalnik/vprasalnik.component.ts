@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UporabnikService} from "../../../services/uporabnik.service";
-import {PodanOdgovor, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
+import {Odgovor, PodanOdgovor, Rezultat, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {CommonModule} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 import {Seja} from "../../../models/admin.model";
@@ -21,10 +21,13 @@ export class VprasalnikComponent implements OnInit {
   dovoljenjeNapredovanja: boolean = true;
   trenutnaSeja: Seja;
   jeAktivnaSeja: boolean = false;
+  jeZadnjeVprasanje: boolean = false;
+  jeKonec: boolean = false;
 
   vprasanja: Vprasanje[];
   trenutnoVprasanje: Vprasanje;
-  trenutniOdgovori: PodanOdgovor[] = [];
+  podaniOdgovori: PodanOdgovor[] = [];
+  odgovori: Odgovor[] = [];
   steviloTock: number = 0;
   sifraUporabnika: string;
 
@@ -51,13 +54,24 @@ export class VprasalnikComponent implements OnInit {
   }
 
   public naslednjeVprasanje(odgovor: string) {
-    console.log(this.trenutniOdgovori);
-    // 1. Konfiguriraj tocke za prejsnjo vprasanje
+    let odgovorDTO: Odgovor = {
+      idVprasanja: this.trenutnoVprasanje.idVprasanje,
+      odgovor: odgovor
+    };
+
     let tocke = 0;
-    if (this.trenutnoVprasanje.podaniOdgovori) {
-      this.trenutniOdgovori.forEach(function (podanOdgovor) {
+    if (this.podaniOdgovori.length > 0) {
+      console.log("IMAM PODANE ODGOVORE.");
+      let podaniOdgovoriString = "";
+      this.podaniOdgovori.forEach(function (podanOdgovor) {
         tocke += podanOdgovor.tocke;
+        podaniOdgovoriString += podanOdgovor.odgovor + ", "
       });
+      odgovorDTO.odgovor = podaniOdgovoriString;
+      this.podaniOdgovori = [];
+    }
+    if (this.trenutnoVprasanje.idVprasanje != null) {
+      this.odgovori.push(odgovorDTO);
     }
     this.steviloTock += tocke;
 
@@ -68,6 +82,7 @@ export class VprasalnikComponent implements OnInit {
     if (this.trenutnoVprasanje.idVprasanje == "v1") {
       this.sifraUporabnika = odgovor;
     }
+
     if (naslednjeVprasanje) {
       this.trenutnoVprasanje = naslednjeVprasanje;
 
@@ -76,17 +91,32 @@ export class VprasalnikComponent implements OnInit {
       //   console.log("Napredovanje se lahko spremeni!");
       //   this.dovoljenjeNapredovanja = naslednjeVprasanje.dovoljenjeNapredovanja;
       // }
+    } else {
+      this.jeZadnjeVprasanje = true;
     }
-
   }
 
   public checkBoxTicked(odgovor: PodanOdgovor) {
-    let najdenOdgovorIndex = this.trenutniOdgovori?.indexOf(odgovor);
+    let najdenOdgovorIndex = this.podaniOdgovori?.indexOf(odgovor);
     if (najdenOdgovorIndex && najdenOdgovorIndex > -1) {
-      this.trenutniOdgovori.splice(najdenOdgovorIndex, 1);
+      this.podaniOdgovori.splice(najdenOdgovorIndex, 1);
       return;
     }
-    this.trenutniOdgovori.push(odgovor);
+    this.podaniOdgovori.push(odgovor);
+  }
+
+  public zakljuci() {
+    let rezultat: Rezultat = {
+      idUporabnika: this.sifraUporabnika,
+      sejaId: this.trenutnaSeja.id,
+      odgovori: this.odgovori
+    }
+    console.log(rezultat);
+    this.uporabnikService.zakljuci(rezultat, this.trenutnaSeja.id).subscribe({
+      next: (_) => {
+        this.jeKonec = true;
+      }
+    });
   }
 
   protected readonly TipVprasanja = TipVprasanja;

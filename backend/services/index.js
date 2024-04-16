@@ -43,4 +43,28 @@ async function dobiSejo(sejaId) {
     }
 }
 
-module.exports = {dobiSejo}
+async function shraniRezultat(rezultat) {
+    try {
+        const resultRezultat = await db.query(
+        `INSERT INTO rezultat
+            (uporabnikId, Seja_idSeja)
+            VALUES (?, ?)`,
+            [rezultat.idUporabnika, rezultat.sejaId]
+        );
+
+        let odgovori = rezultat.odgovori;
+        for (const odgovor of odgovori) {
+            let resultOdgovor = await db.query(`INSERT INTO odgovor
+               (odgovor, idVprasanje, Rezultat_idRezultat)
+                VALUES (?, ?, ?)`,
+                [odgovor.odgovor, odgovor.idVprasanja, resultRezultat.insertId]
+            );
+        }
+
+
+    } catch (err) {
+        console.error(`Error med shranjevanjem rezultata`, err.message);
+    }
+}
+
+module.exports = {dobiSejo, shraniRezultat}
