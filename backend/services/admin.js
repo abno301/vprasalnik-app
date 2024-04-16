@@ -1,18 +1,19 @@
 const db = require('./db');
 
 async function ustvariSejo(novaSeja) {
-    //TODO check if id exists
+    console.log(novaSeja.naziv);
     const result = await db.query(
         `INSERT INTO seja
             (datum, naziv)
             VALUES
-            ('test', 'testNaziv')`
+            (?, ?)`,
+        [novaSeja.datum, novaSeja.naziv]
     );
 
     let message = "Error med kreiranjem nove seje.";
 
     if (result.affectedRows) {
-        message = "Nova seja uspesno kreirana!";
+        message = result.insertId;
     }
 
     for (const vprasanje of novaSeja.vprasanja) {

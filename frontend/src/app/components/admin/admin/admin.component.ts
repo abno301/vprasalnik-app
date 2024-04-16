@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Vprasanja} from "../../../models/uporabnik.model";
-import {Seja} from "../../../models/admin.model";
+import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
 
 @Component({
@@ -32,11 +32,14 @@ export class AdminComponent {
     }
   }
 
-  kreirajSejo() {
-    let sejaId = Math.floor(1000000 * Math.random());
+  kreirajSejo(naziv: String) {
+    // let sejaId = Math.floor(1000000 * Math.random());
+    let trenutniDatum = new Date();
+    let datum = trenutniDatum.getDate()+'/'+(trenutniDatum.getMonth()+1)+'/'+trenutniDatum.getFullYear();
 
-    let seja: Seja = {
-      id: sejaId,
+    let seja: SejaDTO = {
+      naziv: naziv,
+      datum: datum,
       vprasanja: this.vprasanjaSeje.vprasanja,
       rezultati: []
     }
@@ -45,10 +48,8 @@ export class AdminComponent {
     console.log("about to make a call")
     this.adminService.kreirajSejo(seja).subscribe({
       next: (value) => {
-        console.log("made a call.")
-        //do smth
+        alert("Seja z id-jem " + value + " je bila kreirana")
       },
-      complete: () => alert("Seja z id-jem " + sejaId + " je bila kreirana")
     })
   }
 }
