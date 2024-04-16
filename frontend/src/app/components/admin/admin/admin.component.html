@@ -1,16 +1,18 @@
-<h1>Admin Pogled</h1>
+<div class="text-center">
+  <h1 class="text-4xl font-bold">Admin Pogled</h1>
 
-<div>
   <div>
-    <input
-      style="display: none"
-      type="file" (change)="onFileChanged($event)"
-      #fileInput>
-    <button (click)="fileInput.click()">Izberi JSON Datoteko</button>
-  </div>
-  <div class="flex flex-col text-center">
-    <label for="naziv">Dolocite ime nove seje</label>
-    <input #naziv id="naziv" type="text">
-    <button (click)="kreirajSejo(naziv.value)">Kreiraj Sejo</button>
+    <div class="mt-6">
+      <input
+        style="display: none"
+        type="file" (change)="onFileChanged($event)"
+        #fileInput>
+      <button class="border border-black p-2 my-2 rounded" (click)="fileInput.click()">Izberi JSON Datoteko</button>
+    </div>
+    <div class="flex flex-col text-center w-1/4 mx-auto mt-4">
+      <label for="naziv">Dolocite ime nove seje</label>
+      <input #naziv id="naziv" type="text">
+      <button class="border border-black p-2 my-2 rounded w-32 mx-auto" (click)="kreirajSejo(naziv.value)">Kreiraj Sejo</button>
+    </div>
   </div>
 </div>

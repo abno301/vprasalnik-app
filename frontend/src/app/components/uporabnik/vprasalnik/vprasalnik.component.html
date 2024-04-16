@@ -1,43 +1,45 @@
 <ng-container *ngIf="!loading && jeAktivnaSeja">
-  <div *ngIf="!jeKonec">
+  <div class="text-center" *ngIf="!jeKonec">
 
     <div>
-      <h1 class="text-4xl">Dobrodosli v Vprasalnik</h1>
+      <h1 class="text-4xl font-bold">Dobrodosli v Vprasalnik</h1>
       <span>Vasa sifra: {{ sifraUporabnika }}</span><br/>
       <span>Vase stevilo tock: {{ steviloTock }}</span>
     </div>
 <!--    VPRASANJA-->
-    <div class="vprasalnik-card">
+    <div class="vprasalnik-card w-2/3 mx-auto">
 
 <!--      NAVODILO-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.navodila].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.navodila].valueOf()">
         <h2>Navodila</h2>
         <span>{{ trenutnoVprasanje.navodilo }}</span><br/>
 
-        <button [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
           Naprej
         </button>
       </div>
 
 <!--      TEXTBOX-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
         <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
-        <input #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
-        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+        <input class="w-1/4 mx-auto" #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
+
 <!--      TEXTAREA-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textarea].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textarea].valueOf()">
         <label for="{{ trenutnoVprasanje.idVprasanje }}">{{ trenutnoVprasanje.navodilo }}</label><br/>
         <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
 
-        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
+
 <!--      RADIOBUTTON-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.radiobutton].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.radiobutton].valueOf()">
         <span>{{ trenutnoVprasanje.navodilo }}</span>
         <div>
           <div *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
@@ -46,12 +48,13 @@
           </div>
         </div>
 
-        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
+
 <!--      CHECKBOX-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.checkbox].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.checkbox].valueOf()">
         <span>{{ trenutnoVprasanje.navodilo }}</span>
 
         <div>
@@ -61,28 +64,32 @@
           </div>
         </div>
 
-        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
+
 <!--      TOCKE-->
-      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.tocke].valueOf()">
+      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.tocke].valueOf()">
         <span>{{ trenutnoVprasanje.navodilo }}</span>
         <span>{{ steviloTock }}</span>
 
-        <button [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
     </div>
-    <button [hidden]="!jeZadnjeVprasanje" (click)="zakljuci()">Zakljuci</button>
+    <button class="border border-black p-2 my-2 rounded w-24 mx-auto" [hidden]="!jeZadnjeVprasanje" (click)="zakljuci()">Zakljuci</button>
   </div>
-  <div *ngIf="jeKonec">
+
+<!--  ZAKLJUCEK-->
+  <div *ngIf="jeKonec" class="text-center">
     <span>Vprasalnik ste zakljucili, hvala za sodelovanje!</span>
   </div>
 </ng-container>
 
-<div *ngIf="!jeAktivnaSeja">
+<!--SEJA NI NA VOLJO-->
+<div *ngIf="!jeAktivnaSeja" class="text-center">
   Trenutna seja ni na voljo.
 </div>
 
