@@ -1,6 +1,16 @@
 const express = require('express');
-const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo} = require("../services/admin");
+const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo, dobiSeje} = require("../services/admin");
 const router = express.Router();
+
+/* Dobi vse seje. */
+router.get('/seja', async function(req, res, next) {
+  try {
+    res.json(await dobiSeje());
+  } catch (err) {
+    console.error(`Error med dobivanjem sej`, err.message);
+    next(err);
+  }
+});
 
 /* Ustvari novo sejo. */
 router.post('/seja', async function(req, res, next) {
@@ -12,6 +22,7 @@ router.post('/seja', async function(req, res, next) {
   }
 });
 
+/* Dobi aktivno sejo. */
 router.get('/aktivna-seja', async function(req, res, next) {
   try {
     res.json(await dobiAktivnoSejo());
@@ -21,6 +32,7 @@ router.get('/aktivna-seja', async function(req, res, next) {
   }
 });
 
+/* Zakljuci aktivno sejo. */
 router.delete('/aktivna-seja', async function(req, res, next) {
   try {
     res.json(await zbrisiAktivnoSejo());

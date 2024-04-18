@@ -1,5 +1,23 @@
 const db = require('./db');
 
+async function dobiSeje() {
+    const result = await db.query(
+        `SELECT * from seja`
+    );
+
+    let seje = [];
+
+    for (const element of result) {
+        seje.push({
+            id: element.id,
+            datum: element.datum,
+            naziv: element.naziv,
+        });
+    }
+
+    return seje;
+}
+
 async function ustvariSejo(novaSeja) {
     console.log(novaSeja.naziv);
     const result = await db.query(
@@ -45,7 +63,6 @@ async function ustvariVprasanje(sejaId, vprasanje) {
             await ustvariPodanOdgovor(result.insertId, odgovor);
         }
     }
-
     // console.log(message);
 }
 
@@ -91,18 +108,16 @@ async function posodobiAktivnoSejo(sejaId) {
         `SELECT * FROM aktivnaseja`
     );
 
-    let rezultat;
     if (result.length <= 0) {
-        rezultat = await db.query(
-          `INSERT INTO aktivnaseja (sejaId) VALUES (${sejaId})`
+        await db.query(
+            `INSERT INTO aktivnaseja (sejaId) VALUES (${sejaId})`
         );
     } else {
-        rezultat = await db.query(
+        await db.query(
             `UPDATE aktivnaseja SET sejaId=${sejaId} WHERE sejaId=${result[0].sejaId}`
         )
     }
     console.log("Aktivna seja je seja z id-jem: " + sejaId);
-
 }
 
 async function zbrisiAktivnoSejo() {
@@ -118,12 +133,12 @@ async function zbrisiAktivnoSejo() {
     }
 
     return message;
-
 }
 
 
 module.exports = {
     ustvariSejo,
     dobiAktivnoSejo,
-    zbrisiAktivnoSejo
+    zbrisiAktivnoSejo,
+    dobiSeje
 }

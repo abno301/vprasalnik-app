@@ -11,6 +11,10 @@ export class AdminService {
   readonly SERVER_URL: string = "http://localhost:8080/admin";
   constructor(private httpClient: HttpClient) {}
 
+  dobiSeje(): Observable<Seja[]> {
+    return this.httpClient.get<Seja[]>(this.SERVER_URL + "/seja");
+  }
+
   kreirajSejo(seja: SejaDTO): Observable<String> {
     return this.httpClient.post<String>(this.SERVER_URL + "/seja", seja);
   }

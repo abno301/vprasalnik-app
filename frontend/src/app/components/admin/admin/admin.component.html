@@ -23,4 +23,17 @@
     <span class="font-semibold">URL: <span class="font-normal"><a href="http://localhost:4200/{{ aktivnaSeja.id }}/index">http://localhost:4200/{{ aktivnaSeja.id }}/index</a></span></span>
     <button class="border border-black p-2 mt-4 rounded w-32 mx-auto" (click)="koncajSejo()">Koncaj sejo</button>
   </div>
+
+  <hr class="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10 w-4/5 mx-auto" />
+
+  <div class="flex flex-col mt-10 w-4/5 mx-auto">
+    <span class="text-xl font-bold mb-6">Zgodovina Sej</span>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="flex flex-col border border-black rounded pb-2" *ngFor="let seja of vseSeje">
+        <span class="font-semibold mt-2">Naziv: <span class="font-normal">{{ seja.naziv }}</span></span>
+        <span class="font-semibold">Kreirana: <span class="font-normal">{{ seja.datum }}</span></span>
+        <button class="border border-black mt-4 p-1 rounded w-20 mx-auto">Izvozi</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {Vprasanja} from "../../../models/uporabnik.model";
 import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
@@ -19,6 +20,7 @@ export class AdminComponent implements OnInit {
   vprasanjaSeje: Vprasanja;
 
   aktivnaSeja: Seja;
+  vseSeje: Seja[];
 
   constructor(private adminService: AdminService) {}
 
@@ -28,7 +30,13 @@ export class AdminComponent implements OnInit {
         // console.log(seja);
         this.aktivnaSeja = seja;
       }
-    })
+    });
+
+    this.adminService.dobiSeje().subscribe({
+      next: (seje) => {
+        this.vseSeje = seje;
+      }
+    });
   }
 
   onFileChanged(event: any) {
