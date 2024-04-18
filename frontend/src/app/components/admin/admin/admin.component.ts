@@ -1,21 +1,36 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Vprasanja} from "../../../models/uporabnik.model";
 import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
 
   selectedFile: File;
   vprasanjaSeje: Vprasanja;
 
+  aktivnaSeja: Seja;
+
   constructor(private adminService: AdminService) {}
+
+  ngOnInit(): void {
+    this.adminService.dobiAktivnoSejo().subscribe({
+      next: (seja) => {
+        // console.log(seja);
+        this.aktivnaSeja = seja;
+      }
+    })
+  }
+
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
     const fileReader = new FileReader();
@@ -33,7 +48,6 @@ export class AdminComponent {
   }
 
   kreirajSejo(naziv: String) {
-    // let sejaId = Math.floor(1000000 * Math.random());
     let trenutniDatum = new Date();
     let datum = trenutniDatum.getDate()+'/'+(trenutniDatum.getMonth()+1)+'/'+trenutniDatum.getFullYear();
 
@@ -43,13 +57,21 @@ export class AdminComponent {
       vprasanja: this.vprasanjaSeje.vprasanja,
       rezultati: []
     }
-    // TODO Send session id and questions to backend
 
-    console.log("about to make a call")
     this.adminService.kreirajSejo(seja).subscribe({
       next: (value) => {
-        alert("Seja z id-jem " + value + " je bila kreirana")
+        alert("Seja z id-jem " + value + " je bila kreirana");
+        this.ngOnInit();
       },
+    })
+  }
+
+  koncajSejo(): void {
+    this.adminService.koncajSejo().subscribe({
+      next: (_) => {
+        alert("Seja je bila zakljucena");
+        this.ngOnInit();
+      }
     })
   }
 }

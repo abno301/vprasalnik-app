@@ -31,6 +31,8 @@ export class VprasalnikComponent implements OnInit {
   steviloTock: number = 0;
   sifraUporabnika: string;
 
+  radioButtonOdgovor: PodanOdgovor = new PodanOdgovor();
+
   constructor(private uporabnikService: UporabnikService, private route: ActivatedRoute) {
   }
 
@@ -59,9 +61,16 @@ export class VprasalnikComponent implements OnInit {
       odgovor: odgovor
     };
 
-    let tocke = 0;
+    // Preveri ce je radio button vprasanje
+    if (Object.keys(this.radioButtonOdgovor).length) {
+      this.steviloTock += this.radioButtonOdgovor.tocke;
+      odgovorDTO.odgovor = this.radioButtonOdgovor.odgovor;
+      this.radioButtonOdgovor = new PodanOdgovor();
+    }
+
+    // Preveri ce je checkbox vprasanje
     if (this.podaniOdgovori.length > 0) {
-      console.log("IMAM PODANE ODGOVORE.");
+      let tocke = 0;
       let podaniOdgovoriString = "";
       this.podaniOdgovori.forEach(function (podanOdgovor) {
         tocke += podanOdgovor.tocke;
@@ -69,12 +78,15 @@ export class VprasalnikComponent implements OnInit {
       });
       odgovorDTO.odgovor = podaniOdgovoriString;
       this.podaniOdgovori = [];
+      this.steviloTock += tocke;
     }
+
+    // Dodaj odgovor/e
     if (this.trenutnoVprasanje.idVprasanje != null) {
       this.odgovori.push(odgovorDTO);
     }
-    this.steviloTock += tocke;
 
+    // Idi na naslednje vprasanje
     let trenutniIndex = this.vprasanja.findIndex(vprasanje => this.trenutnoVprasanje == vprasanje);
     let naslednjeVprasanje = this.vprasanja[trenutniIndex + 1];
 
@@ -105,12 +117,17 @@ export class VprasalnikComponent implements OnInit {
     this.podaniOdgovori.push(odgovor);
   }
 
+  public radioButtonSelected(odgovor: PodanOdgovor) {
+    this.radioButtonOdgovor = odgovor;
+  }
+
   public zakljuci() {
     let rezultat: Rezultat = {
       idUporabnika: this.sifraUporabnika,
       sejaId: this.trenutnaSeja.id,
       odgovori: this.odgovori
     }
+
     console.log(rezultat);
     this.uporabnikService.zakljuci(rezultat, this.trenutnaSeja.id).subscribe({
       next: (_) => {

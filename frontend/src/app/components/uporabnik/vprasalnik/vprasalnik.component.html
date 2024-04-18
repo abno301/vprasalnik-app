@@ -43,7 +43,7 @@
         <span>{{ trenutnoVprasanje.navodilo }}</span>
         <div>
           <div *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
-            <input type="radio" id="{{ odgovor.id }}" value="{{ odgovor.odgovor }}" (click)="checkBoxTicked(odgovor)">
+            <input #odgovor type="radio" id="{{ odgovor.id }}" name="radio" value="{{ odgovor.odgovor }}" (click)="radioButtonSelected(odgovor)">
             <label for="{{ odgovor.id }}">{{ odgovor.odgovor }}</label>
           </div>
         </div>

@@ -19,10 +19,10 @@ export enum TipVprasanja {
   navodila
 }
 
-export interface PodanOdgovor {
-  id: number,
-  odgovor: string,
-  tocke: number
+export class PodanOdgovor {
+  id: number;
+  odgovor: string;
+  tocke: number;
 }
 
 export interface Odgovor {

@@ -65,6 +65,27 @@ async function ustvariPodanOdgovor(vprasanjeId, odgovor) {
     // console.log(message);
 }
 
+async function dobiAktivnoSejo() {
+    const result = await db.query(
+        `SELECT * FROM aktivnaseja`
+    );
+
+    let rezultat;
+    if (result.length <= 0) {
+        return null;
+    } else {
+        rezultat = await db.query(
+            `SELECT * FROM seja WHERE id=${result[0].sejaId}`
+        );
+
+        return {
+            id: rezultat[0].id,
+            datum: rezultat[0].datum,
+            naziv: rezultat[0].naziv,
+        }
+    }
+}
+
 async function posodobiAktivnoSejo(sejaId) {
     const result = await db.query(
         `SELECT * FROM aktivnaseja`
@@ -84,7 +105,25 @@ async function posodobiAktivnoSejo(sejaId) {
 
 }
 
+async function zbrisiAktivnoSejo() {
+
+    const result = await db.query(
+        `DELETE FROM aktivnaseja`
+    );
+
+    let message = "Error med zakljucevanjem aktivne seje.";
+
+    if (result.affectedRows) {
+        message = "Aktivna seja zakljucena.";
+    }
+
+    return message;
+
+}
+
 
 module.exports = {
-    ustvariSejo
+    ustvariSejo,
+    dobiAktivnoSejo,
+    zbrisiAktivnoSejo
 }

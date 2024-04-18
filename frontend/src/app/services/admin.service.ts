@@ -15,5 +15,12 @@ export class AdminService {
     return this.httpClient.post<String>(this.SERVER_URL + "/seja", seja);
   }
 
+  dobiAktivnoSejo(): Observable<Seja> {
+    return this.httpClient.get<Seja>(this.SERVER_URL + "/aktivna-seja");
+  }
+
+  koncajSejo():Observable<any> {
+    return this.httpClient.delete<any>(this.SERVER_URL + "/aktivna-seja")
+  }
 
 }
