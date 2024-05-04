@@ -17,14 +17,21 @@ export class UporabnikService {
   }
 
   public dobiSejo(sejaId: number): Observable<any> {
-    return this.httpClient.get(this.BACKEND_URL + "seja/" + sejaId)
+    return this.httpClient.get(this.BACKEND_URL + "seja/" + sejaId);
+  }
+
+  public aktivnoVprasanje(request: any): Observable<any> {
+    return this.httpClient.post(
+      this.BACKEND_URL + "aktivna-vprasanja",
+      request
+    );
   }
 
   public zakljuci(rezultati: Rezultat, sejaId: number): Observable<any> {
     return this.httpClient.post(
       this.BACKEND_URL + "seja/" + sejaId,
       rezultati
-    )
+    );
   }
 
 }

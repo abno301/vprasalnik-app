@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Vprasanja} from "../../../models/uporabnik.model";
+import {Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
 import {NgForOf, NgIf} from "@angular/common";
@@ -18,6 +18,7 @@ export class AdminComponent implements OnInit {
 
   selectedFile: File;
   vprasanjaSeje: Vprasanja;
+  vprasanjaAktivneSeje: Vprasanje[];
 
   aktivnaSeja: Seja;
   vseSeje: Seja[];
@@ -29,6 +30,13 @@ export class AdminComponent implements OnInit {
       next: (seja) => {
         // console.log(seja);
         this.aktivnaSeja = seja;
+
+        this.vprasanjaAktivneSeje = seja.vprasanja;
+        for(const vprasanje of seja.vprasanja) {
+          if (vprasanje.dovoljenjeNapredovanja) {
+            console.log(vprasanje.dovoljenjeNapredovanja);
+          }
+        }
       }
     });
 

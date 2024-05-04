@@ -19,7 +19,7 @@ async function dobiSeje() {
 }
 
 async function ustvariSejo(novaSeja) {
-    console.log(novaSeja.naziv);
+    console.log("Nova seja: " + novaSeja.naziv);
     const result = await db.query(
         `INSERT INTO seja
             (datum, naziv)
@@ -95,10 +95,18 @@ async function dobiAktivnoSejo() {
             `SELECT * FROM seja WHERE id=${result[0].sejaId}`
         );
 
+        let rezultatVprasanje = await db.query(
+            `SELECT * from vprasanje
+                WHERE vprasanje.Seja_idSeja = ${result[0].sejaId}`
+        );
+
+        let vprasanja = JSON.parse(JSON.stringify(rezultatVprasanje));
+
         return {
             id: rezultat[0].id,
             datum: rezultat[0].datum,
             naziv: rezultat[0].naziv,
+            vprasanja: vprasanja
         }
     }
 }

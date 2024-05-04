@@ -95,6 +95,17 @@ export class VprasalnikComponent implements OnInit {
       this.sifraUporabnika = odgovor;
     }
 
+    let req = {
+      idUporabnika: this.sifraUporabnika,
+      idVprasanje: this.trenutnoVprasanje.id
+    }
+
+    this.uporabnikService.aktivnoVprasanje(req).subscribe({
+      next: (_) => {
+       console.log("Shranil kje je uporabnik v vprasalniku.")
+      }
+    });
+
     if (naslednjeVprasanje) {
       this.trenutnoVprasanje = naslednjeVprasanje;
 

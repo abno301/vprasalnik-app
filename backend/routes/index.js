@@ -2,7 +2,7 @@ const express = require('express');
 const {dobiSejo} = require("../services/index");
 const router = express.Router();
 const cors = require('cors')
-const {shraniRezultat} = require("../services");
+const {shraniRezultat, shraniAktivnoVprasanje} = require("../services");
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -22,6 +22,14 @@ router.post('/seja/:sejaId', cors(), async function (req, res) {
     res.json(await shraniRezultat(req.body));
   } catch (err) {
     console.error(`Error med dobivanjem seje`, err.message);
+  }
+});
+
+router.post('/aktivna-vprasanja', cors(), async function (req, res) {
+  try {
+    res.json(await shraniAktivnoVprasanje(req.body));
+  } catch (err) {
+    console.error(`Error med dodajanjem aktivnega vprasanja`, err.message);
   }
 });
 

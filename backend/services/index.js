@@ -67,4 +67,34 @@ async function shraniRezultat(rezultat) {
     }
 }
 
-module.exports = {dobiSejo, shraniRezultat}
+async function shraniAktivnoVprasanje(req) {
+    try {
+        if (req.idUporabnika && req.idVprasanje) {
+            const getCurrentVprasanje = await db.query(
+                `SELECT * FROM aktivnavprasanja WHERE aktivnavprasanja.idUporabnik = ?`,
+                [req.idUporabnika]
+            );
+
+            if (getCurrentVprasanje.length > 0) {
+                await db.query(
+                    `DELETE FROM aktivnavprasanja WHERE aktivnavprasanja.idUporabnik = ${req.idUporabnika}`
+                );
+            }
+
+            await db.query(
+                `INSERT INTO aktivnavprasanja
+                (idUporabnik, idVprasanje)
+                VALUES (?, ?)`,
+                [req.idUporabnika, req.idVprasanje]
+            );
+        } else {
+            console.log("Neveljavni podatki za shranjevanje aktivnega vprašanja.");
+        }
+
+    } catch (err) {
+        console.error(`Error med shranjevanjem aktivnega vprasanja`, err.message);
+    }
+}
+
+
+module.exports = {dobiSejo, shraniRezultat, shraniAktivnoVprasanje}

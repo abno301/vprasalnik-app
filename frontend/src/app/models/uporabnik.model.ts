@@ -3,6 +3,7 @@ export interface Vprasanja {
 }
 
 export interface Vprasanje {
+  id: number,
   idVprasanje: string,
   navodilo: string,
   tip: TipVprasanja,
