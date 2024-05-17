@@ -77,7 +77,8 @@ async function shraniAktivnoVprasanje(req) {
 
             if (getCurrentVprasanje.length > 0) {
                 await db.query(
-                    `DELETE FROM aktivnavprasanja WHERE aktivnavprasanja.idUporabnik = ${req.idUporabnika}`
+                    `DELETE FROM aktivnavprasanja WHERE aktivnavprasanja.idUporabnik = ?`,
+                    [req.idUporabnika]
                 );
             }
 
@@ -87,6 +88,8 @@ async function shraniAktivnoVprasanje(req) {
                 VALUES (?, ?)`,
                 [req.idUporabnika, req.idVprasanje]
             );
+
+            console.log("PO insert: ");
         } else {
             console.log("Neveljavni podatki za shranjevanje aktivnega vprašanja.");
         }

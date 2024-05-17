@@ -95,20 +95,18 @@ export class VprasalnikComponent implements OnInit {
       this.sifraUporabnika = odgovor;
     }
 
-    let req = {
-      idUporabnika: this.sifraUporabnika,
-      idVprasanje: this.trenutnoVprasanje.id
-    }
-
-    this.uporabnikService.aktivnoVprasanje(req).subscribe({
-      next: (_) => {
-       console.log("Shranil kje je uporabnik v vprasalniku.")
-      }
-    });
-
     if (naslednjeVprasanje) {
       this.trenutnoVprasanje = naslednjeVprasanje;
 
+      let aktivnoVprasanjeDTO = {
+        idUporabnika: this.sifraUporabnika,
+        idVprasanje: this.trenutnoVprasanje.id
+      }
+      this.uporabnikService.aktivnoVprasanje(aktivnoVprasanjeDTO).subscribe({
+        next: (_) => {
+          console.log("Shranil kje je uporabnik v vprasalniku.")
+        }
+      });
       //TODO CONFIGURE SO IT WAITS WHEN ADMIN TURNS IT ON
       // if (naslednjeVprasanje.dovoljenjeNapredovanja != undefined) {
       //   console.log("Napredovanje se lahko spremeni!");
