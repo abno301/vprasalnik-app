@@ -8,7 +8,8 @@ export interface Vprasanje {
   navodilo: string,
   tip: TipVprasanja,
   dovoljenjeNapredovanja?: boolean,
-  podaniOdgovori?: PodanOdgovor[]
+  podaniOdgovori?: PodanOdgovor[],
+  uporabniki?: String[]
 }
 
 export enum TipVprasanja {

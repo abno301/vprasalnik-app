@@ -123,30 +123,46 @@ async function posodobiAktivnoSejo(sejaId) {
     } else {
         await db.query(
             `UPDATE aktivnaseja SET sejaId=${sejaId} WHERE sejaId=${result[0].sejaId}`
-        )
+        );
+        await db.query(
+            `DELETE FROM aktivnavprasanja`
+        );
     }
     console.log("Aktivna seja je seja z id-jem: " + sejaId);
 }
 
 async function zbrisiAktivnoSejo() {
 
-    const result = await db.query(
+    const resultSeja = await db.query(
         `DELETE FROM aktivnaseja`
+    );
+
+    const resultVprasanja = await db.query(
+        `DELETE FROM aktivnavprasanja`
     );
 
     let message = "Error med zakljucevanjem aktivne seje.";
 
-    if (result.affectedRows) {
+    if (resultSeja.affectedRows) {
         message = "Aktivna seja zakljucena.";
     }
 
     return message;
 }
 
+async function dobiAktivnaVprasanja() {
+
+    return await db.query(
+        `SELECT * FROM aktivnavprasanja`
+    );
+}
+
+
 
 module.exports = {
     ustvariSejo,
     dobiAktivnoSejo,
     zbrisiAktivnoSejo,
-    dobiSeje
+    dobiSeje,
+    dobiAktivnaVprasanja
 }

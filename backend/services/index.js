@@ -88,8 +88,6 @@ async function shraniAktivnoVprasanje(req) {
                 VALUES (?, ?)`,
                 [req.idUporabnika, req.idVprasanje]
             );
-
-            console.log("PO insert: ");
         } else {
             console.log("Neveljavni podatki za shranjevanje aktivnega vprašanja.");
         }

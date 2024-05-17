@@ -14,3 +14,8 @@ export interface SejaDTO {
   vprasanja: Vprasanje[],
   rezultati: Rezultat[]
 }
+
+export interface AktivnoVprasanje {
+  idUporabnik: String,
+  idVprasanje: number
+}

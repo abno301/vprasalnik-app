@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Seja, SejaDTO} from "../models/admin.model";
+import {AktivnoVprasanje, Seja, SejaDTO} from "../models/admin.model";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -25,6 +25,9 @@ export class AdminService {
 
   koncajSejo():Observable<any> {
     return this.httpClient.delete<any>(this.SERVER_URL + "/aktivna-seja")
+  }
+  dobiAktivnaVprasanja(): Observable<AktivnoVprasanje[]> {
+    return this.httpClient.get<AktivnoVprasanje[]>(this.SERVER_URL + "/aktivna-seja/aktivna-vprasanja");
   }
 
 }

@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
-import {Seja, SejaDTO} from "../../../models/admin.model";
+import {AktivnoVprasanje, Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
 import {NgForOf, NgIf} from "@angular/common";
+import {switchMap} from "rxjs";
 
 @Component({
   selector: 'app-admin',
@@ -26,24 +27,36 @@ export class AdminComponent implements OnInit {
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
-    this.adminService.dobiAktivnoSejo().subscribe({
-      next: (seja) => {
-        // console.log(seja);
+    this.adminService.dobiAktivnoSejo().pipe(
+      switchMap(seja => {
         this.aktivnaSeja = seja;
-
         this.vprasanjaAktivneSeje = seja.vprasanja;
+
         for(const vprasanje of seja.vprasanja) {
           if (vprasanje.dovoljenjeNapredovanja) {
             console.log(vprasanje.dovoljenjeNapredovanja);
           }
+          if (!vprasanje.uporabniki) {
+            vprasanje.uporabniki = [];
+          }
         }
-      }
-    });
 
-    this.adminService.dobiSeje().subscribe({
-      next: (seje) => {
-        this.vseSeje = seje;
-      }
+        return this.adminService.dobiAktivnaVprasanja();
+      })
+    ).subscribe({
+      next: (aktivnaVprasanja) => {
+        for(const vprasanje of this.vprasanjaAktivneSeje) {
+          for (const aktivnoVprasanje of aktivnaVprasanja) {
+            if (vprasanje.id == aktivnoVprasanje.idVprasanje) {
+              vprasanje.uporabniki?.push(aktivnoVprasanje.idUporabnik);
+            }
+          }
+        }
+        console.log(this.vprasanjaAktivneSeje);
+      },
+      error: (err) => {
+        console.error('Error: ', err);
+      },
     });
   }
 

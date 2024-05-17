@@ -1,5 +1,5 @@
 const express = require('express');
-const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo, dobiSeje} = require("../services/admin");
+const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo, dobiSeje, dobiAktivnaVprasanja} = require("../services/admin");
 const router = express.Router();
 
 /* Dobi vse seje. */
@@ -38,6 +38,15 @@ router.delete('/aktivna-seja', async function(req, res, next) {
     res.json(await zbrisiAktivnoSejo());
   } catch (err) {
     console.error(`Error med dobivanjem aktivne seje`, err.message);
+    next(err);
+  }
+});
+
+router.get('/aktivna-seja/aktivna-vprasanja', async function(req, res, next) {
+  try {
+    res.json(await dobiAktivnaVprasanja());
+  } catch (err) {
+    console.error(`Error med dobivanjem aktivnih vprasanj`, err.message);
     next(err);
   }
 });

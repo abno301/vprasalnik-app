@@ -29,6 +29,11 @@
           <span class="font-semibold mt-2">Navodilo: <span class="font-normal">{{ vprasanje.idVprasanje }}</span></span>
           <span class="font-semibold">Tip: <span class="font-normal">{{ vprasanje.tip }}</span></span>
           <!-- expansion panel -->
+          <div *ngIf="vprasanje.uporabniki">
+            <span *ngFor="let uporabnik of vprasanje.uporabniki">
+              {{ uporabnik }}
+            </span>
+          </div>
           <!--        <button class="border border-black mt-4 p-1 rounded w-20 mx-auto bg-white">Izvozi</button>-->
           <button class="border border-black mt-2 p-1 rounded mx-auto bg-white" *ngIf="vprasanje.dovoljenjeNapredovanja == false">
             Dovoli Napredovanje
