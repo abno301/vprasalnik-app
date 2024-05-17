@@ -29,7 +29,8 @@
           <span class="font-semibold mt-2">Navodilo: <span class="font-normal">{{ vprasanje.idVprasanje }}</span></span>
           <span class="font-semibold">Tip: <span class="font-normal">{{ vprasanje.tip }}</span></span>
           <!-- expansion panel -->
-          <div *ngIf="vprasanje.uporabniki">
+          <div class="flex flex-col" *ngIf="vprasanje.uporabniki">
+            <span class="font-semibold">Uporabniki:</span>
             <span *ngFor="let uporabnik of vprasanje.uporabniki">
               {{ uporabnik }}
             </span>
