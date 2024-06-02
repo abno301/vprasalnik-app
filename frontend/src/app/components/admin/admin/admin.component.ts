@@ -5,11 +5,12 @@ import {AdminService} from "../../../services/admin.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {switchMap} from "rxjs";
 import fileSaver from "file-saver";
-import * as XLSX from "xlsx";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
+
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -29,7 +30,9 @@ export class AdminComponent implements OnInit {
   aktivnaSeja: Seja;
   vseSeje: Seja[];
 
-  constructor(private adminService: AdminService) {}
+  downloadJsonHref: SafeUrl;
+
+  constructor(private adminService: AdminService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.adminService.dobiAktivnoSejo().pipe(
@@ -68,6 +71,7 @@ export class AdminComponent implements OnInit {
       next: (seje) => {
         this.vseSeje = seje;
         console.log(seje);
+        this.generateDownloadJsonUri();
       }
     });
   }
@@ -127,5 +131,10 @@ export class AdminComponent implements OnInit {
   private shraniExcel(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], {type: EXCEL_TYPE});
     fileSaver.saveAs(data, fileName + '_export_' + new  Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  generateDownloadJsonUri() {
+    const theJSON = JSON.stringify(this.vseSeje);
+    this.downloadJsonHref = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
   }
 }
