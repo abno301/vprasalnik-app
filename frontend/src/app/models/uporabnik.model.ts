@@ -28,11 +28,18 @@ export class PodanOdgovor {
 }
 
 export interface Odgovor {
+  idOdgovor?: number,
   idVprasanja: string,
   odgovor: string
 }
 
 export interface Rezultat {
+  rezultatId: number,
+  uporabnikId: string,
+  odgovori: Odgovor[]
+}
+
+export interface RezultatDTO {
   idUporabnika: string,
   sejaId: number,
   odgovori: Odgovor[]

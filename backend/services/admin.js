@@ -1,17 +1,49 @@
 const db = require('./db');
 
 async function dobiSeje() {
-    const result = await db.query(
+
+    const resultSeja = await db.query(
         `SELECT * from seja`
     );
 
     let seje = [];
 
-    for (const element of result) {
+    for (const seja of resultSeja) {
+
+        let resultRezultat = await db.query(
+            `SELECT id, uporabnikId from rezultat WHERE rezultat.Seja_idSeja = ${seja.id}`
+        );
+
+        let rezultatiSeje = []
+        for (const rezultat of resultRezultat) {
+
+            let resultOdgovori = await db.query(
+                `SELECT id, odgovor, idVprasanje FROM odgovor
+                    WHERE odgovor.Rezultat_idRezultat = ${rezultat.id}`
+            );
+
+            let odgovori = []
+            for (const odgovor of resultOdgovori) {
+                odgovori.push({
+                    idOdgovor: odgovor.id,
+                    odgovor: odgovor.odgovor,
+                    idVprasanja: odgovor.idVprasanje
+                });
+            }
+
+            rezultatiSeje.push({
+                rezultatId: rezultat.id,
+                uporabnikId: rezultat.uporabnikId,
+                odgovori: odgovori
+            });
+
+        }
+
         seje.push({
-            id: element.id,
-            datum: element.datum,
-            naziv: element.naziv,
+            id: seja.id,
+            datum: seja.datum,
+            naziv: seja.naziv,
+            rezultati: rezultatiSeje
         });
     }
 

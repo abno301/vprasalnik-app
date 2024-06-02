@@ -28,7 +28,7 @@
         <div class="flex flex-col border border-black rounded bg-gray-100 pb-2" *ngFor="let vprasanje of vprasanjaAktivneSeje">
           <span class="font-semibold mt-2">Navodilo: <span class="font-normal">{{ vprasanje.idVprasanje }}</span></span>
           <span class="font-semibold">Tip: <span class="font-normal">{{ vprasanje.tip }}</span></span>
-          <!-- expansion panel -->
+          <!-- uporabniki -->
           <div class="flex flex-col" *ngIf="vprasanje.uporabniki">
             <span class="font-semibold">Uporabniki:</span>
             <span *ngFor="let uporabnik of vprasanje.uporabniki">
@@ -53,7 +53,7 @@
       <div class="flex flex-col border border-black rounded bg-gray-100 pb-2" *ngFor="let seja of vseSeje">
         <span class="font-semibold mt-2">Naziv: <span class="font-normal">{{ seja.naziv }}</span></span>
         <span class="font-semibold">Kreirana: <span class="font-normal">{{ seja.datum }}</span></span>
-        <button class="border border-black mt-4 p-1 rounded w-20 mx-auto bg-white">Izvozi</button>
+        <button class="border border-black mt-4 p-1 rounded w-20 mx-auto bg-white" (click)="izvoziExcel(seja, seja.naziv)">Izvozi</button>
       </div>
     </div>
   </div>

@@ -1,10 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
-import {AktivnoVprasanje, Seja, SejaDTO} from "../../../models/admin.model";
+import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {switchMap} from "rxjs";
+import fileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -52,11 +57,18 @@ export class AdminComponent implements OnInit {
             }
           }
         }
-        console.log(this.vprasanjaAktivneSeje);
+        // console.log(this.vprasanjaAktivneSeje);
       },
       error: (err) => {
         console.error('Error: ', err);
       },
+    });
+
+    this.adminService.dobiSeje().subscribe({
+      next: (seje) => {
+        this.vseSeje = seje;
+        console.log(seje);
+      }
     });
   }
 
@@ -102,5 +114,18 @@ export class AdminComponent implements OnInit {
         this.ngOnInit();
       }
     })
+  }
+
+  izvoziExcel(json: Seja, excelFileName: string): void {
+    console.log(json);
+    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    // const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    // this.shraniExcel(excelBuffer, excelFileName);
+  }
+
+  private shraniExcel(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], {type: EXCEL_TYPE});
+    fileSaver.saveAs(data, fileName + '_export_' + new  Date().getTime() + EXCEL_EXTENSION);
   }
 }

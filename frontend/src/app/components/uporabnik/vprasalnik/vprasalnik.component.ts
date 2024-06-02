@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UporabnikService} from "../../../services/uporabnik.service";
-import {Odgovor, PodanOdgovor, Rezultat, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
+import {Odgovor, PodanOdgovor, RezultatDTO, TipVprasanja, Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {CommonModule} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 import {Seja} from "../../../models/admin.model";
@@ -131,7 +131,7 @@ export class VprasalnikComponent implements OnInit {
   }
 
   public zakljuci() {
-    let rezultat: Rezultat = {
+    let rezultat: RezultatDTO = {
       idUporabnika: this.sifraUporabnika,
       sejaId: this.trenutnaSeja.id,
       odgovori: this.odgovori
