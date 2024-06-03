@@ -1,5 +1,5 @@
 const express = require('express');
-const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo, dobiSeje, dobiAktivnaVprasanja} = require("../services/admin");
+const { ustvariSejo, dobiAktivnoSejo, zbrisiAktivnoSejo, dobiSeje, dobiAktivnaVprasanja, spremeniDovoljenjeVprasanja} = require("../services/admin");
 const router = express.Router();
 
 /* Dobi vse seje. */
@@ -47,6 +47,15 @@ router.get('/aktivna-seja/aktivna-vprasanja', async function(req, res, next) {
     res.json(await dobiAktivnaVprasanja());
   } catch (err) {
     console.error(`Error med dobivanjem aktivnih vprasanj`, err.message);
+    next(err);
+  }
+});
+
+router.post('/aktivna-seja/dovoli-vprasanje', async function(req, res, next) {
+  try {
+    res.json(await spremeniDovoljenjeVprasanja(req.body));
+  } catch (err) {
+    console.error(`Error med spreminjanjem dovoljenja`, err.message);
     next(err);
   }
 });

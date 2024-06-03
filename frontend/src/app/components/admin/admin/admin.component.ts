@@ -92,6 +92,23 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  dovoliNapredovanje(idVprasanja: number): void {
+
+    let req = { vprasanjeId: idVprasanja}
+    this.adminService.spremeniDovoljenjeVprasanja(req).subscribe({
+      next: (_) => {
+        console.log("Spremenil vprasanje!");
+      }
+    });
+
+    // Da se silent refresha strani
+    for(const vprasanje of this.vprasanjaAktivneSeje) {
+      if (vprasanje.id == idVprasanja) {
+        vprasanje.dovoljenjeNapredovanja = true;
+      }
+    }
+  }
+
   kreirajSejo(naziv: String) {
     let trenutniDatum = new Date();
     let datum = trenutniDatum.getDate()+'/'+(trenutniDatum.getMonth()+1)+'/'+trenutniDatum.getFullYear();

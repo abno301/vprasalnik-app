@@ -30,4 +30,8 @@ export class AdminService {
     return this.httpClient.get<AktivnoVprasanje[]>(this.SERVER_URL + "/aktivna-seja/aktivna-vprasanja");
   }
 
+  spremeniDovoljenjeVprasanja(vprasanjeId: any): Observable<any> {
+    return this.httpClient.post<any>(this.SERVER_URL + "/aktivna-seja/dovoli-vprasanje", vprasanjeId);
+  }
+
 }

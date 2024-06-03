@@ -189,6 +189,20 @@ async function dobiAktivnaVprasanja() {
     );
 }
 
+async function spremeniDovoljenjeVprasanja(req) {
+    let vprasanje = await db.query(
+        `SELECT * FROM vprasanje WHERE vprasanje.id=${req.vprasanjeId}`
+    );
+
+    let result;
+    if (vprasanje != null) {
+        result = await db.query(
+            `UPDATE vprasanje SET vprasanje.dovoljenjeNapredovanja = 1 WHERE vprasanje.id=${req.vprasanjeId}`
+        )
+    }
+
+}
+
 
 
 module.exports = {
@@ -196,5 +210,6 @@ module.exports = {
     dobiAktivnoSejo,
     zbrisiAktivnoSejo,
     dobiSeje,
-    dobiAktivnaVprasanja
+    dobiAktivnaVprasanja,
+    spremeniDovoljenjeVprasanja
 }
