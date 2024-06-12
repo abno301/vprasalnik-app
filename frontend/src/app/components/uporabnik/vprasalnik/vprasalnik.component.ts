@@ -33,8 +33,7 @@ export class VprasalnikComponent implements OnInit {
 
   radioButtonOdgovor: PodanOdgovor = new PodanOdgovor();
 
-  constructor(private uporabnikService: UporabnikService, private route: ActivatedRoute) {
-  }
+  constructor(private uporabnikService: UporabnikService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -45,14 +44,45 @@ export class VprasalnikComponent implements OnInit {
           let dobljenaSeja = result[0];
           if (dobljenaSeja.aktivnaSeja == dobljenaSeja.id) {
             this.jeAktivnaSeja = true;
+          } else {
+            localStorage.removeItem("storage");
           }
-          this.trenutnaSeja = dobljenaSeja;
+
           this.vprasanja = dobljenaSeja.vprasanja;
-          this.trenutnoVprasanje = this.vprasanja[0];
+          console.log(this.vprasanja);
+          this.trenutnaSeja = dobljenaSeja;
+
+          if (!this.localStorageNapolnjen()) {
+            this.trenutnoVprasanje = this.vprasanja[0];
+          }
+
         },
         complete: () => this.loading = false
       });
     });
+  }
+
+  public localStorageNapolnjen(): boolean {
+    let storageJSON = localStorage.getItem("storage");
+    if (storageJSON != null) {
+      let storage = JSON.parse(storageJSON);
+
+      if (this.trenutnaSeja.id != storage.idSeja) {
+        localStorage.removeItem("storage");
+        return false;
+      }
+
+      let trenutnoVprasanje = this.vprasanja.find(vprasanje => vprasanje.id == storage.idTrenutnoVprasanje);
+      if (trenutnoVprasanje != undefined) {
+        this.trenutnoVprasanje = trenutnoVprasanje;
+      }
+      this.steviloTock = storage.steviloTock;
+      this.odgovori = storage.odgovori;
+      this.sifraUporabnika = storage.idUporabnika;
+
+      return true;
+    }
+    return false;
   }
 
   public naslednjeVprasanje(odgovor: string) {
@@ -90,7 +120,7 @@ export class VprasalnikComponent implements OnInit {
     let trenutniIndex = this.vprasanja.findIndex(vprasanje => this.trenutnoVprasanje == vprasanje);
     let naslednjeVprasanje = this.vprasanja[trenutniIndex + 1];
 
-    //TODO je hardcoded na vprasanje id v1
+    // je hardcoded na vprasanje id v1
     if (this.trenutnoVprasanje.idVprasanje == "v1") {
       this.sifraUporabnika = odgovor;
     }
@@ -107,11 +137,14 @@ export class VprasalnikComponent implements OnInit {
           console.log("Shranil kje je uporabnik v vprasalniku.")
         }
       });
-      //TODO CONFIGURE SO IT WAITS WHEN ADMIN TURNS IT ON
-      // if (naslednjeVprasanje.dovoljenjeNapredovanja != undefined) {
-      //   console.log("Napredovanje se lahko spremeni!");
-      //   this.dovoljenjeNapredovanja = naslednjeVprasanje.dovoljenjeNapredovanja;
-      // }
+      let localStorageItem = {
+        idUporabnika: this.sifraUporabnika,
+        idTrenutnoVprasanje: this.trenutnoVprasanje.id,
+        idSeja: this.trenutnaSeja.id,
+        odgovori: this.odgovori,
+        steviloTock: this.steviloTock
+      }
+      localStorage.setItem("storage", JSON.stringify(localStorageItem));
     } else {
       this.jeZadnjeVprasanje = true;
     }
@@ -137,7 +170,7 @@ export class VprasalnikComponent implements OnInit {
       odgovori: this.odgovori
     }
 
-    console.log(rezultat);
+    // console.log(rezultat);
     this.uporabnikService.zakljuci(rezultat, this.trenutnaSeja.id).subscribe({
       next: (_) => {
         this.jeKonec = true;

@@ -19,6 +19,7 @@
       "id": "v3",
       "navodilo": "Kateri izmed spodaj navedenih je glavni vzrok globalnega segrevanja?",
       "tip": "radiobutton",
+      "dovoljenjeNapredovanja": false,
       "odgovori": [
         {
           "id": "3a",
@@ -46,6 +47,7 @@
       "id": "v4",
       "navodilo": "Izberite dejavnosti, ki pripomorejo k zmanjšanju ogljičnega odtisa.",
       "tip": "checkbox",
+      "dovoljenjeNapredovanja": false,
       "odgovori": [
         {
           "id": "4a",

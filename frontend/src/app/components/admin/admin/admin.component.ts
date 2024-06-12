@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
 import {Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
-import {NgForOf, NgIf} from "@angular/common";
-import {switchMap} from "rxjs";
+import {AsyncPipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
+import {Observable, switchMap, take, tap} from "rxjs";
 import fileSaver from "file-saver";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
 
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -16,7 +17,10 @@ const EXCEL_EXTENSION = '.xlsx';
   standalone: true,
   imports: [
     NgIf,
-    NgForOf
+    NgForOf,
+    FormsModule,
+    AsyncPipe,
+    JsonPipe
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
@@ -42,7 +46,7 @@ export class AdminComponent implements OnInit {
 
         for(const vprasanje of seja.vprasanja) {
           if (vprasanje.dovoljenjeNapredovanja) {
-            console.log(vprasanje.dovoljenjeNapredovanja);
+            // console.log(vprasanje.dovoljenjeNapredovanja);
           }
           if (!vprasanje.uporabniki) {
             vprasanje.uporabniki = [];
@@ -70,7 +74,6 @@ export class AdminComponent implements OnInit {
     this.adminService.dobiSeje().subscribe({
       next: (seje) => {
         this.vseSeje = seje;
-        console.log(seje);
         this.generateDownloadJsonUri();
       }
     });
@@ -94,19 +97,20 @@ export class AdminComponent implements OnInit {
 
   dovoliNapredovanje(idVprasanja: number): void {
 
-    let req = { vprasanjeId: idVprasanja}
+    let req = { vprasanjeId: idVprasanja};
+
+    for(const vprasanje of this.vprasanjaAktivneSeje) {
+      if (vprasanje.id == idVprasanja) {
+        vprasanje.dovoljenjeNapredovanja = true;
+      }
+    }
+
     this.adminService.spremeniDovoljenjeVprasanja(req).subscribe({
       next: (_) => {
         console.log("Spremenil vprasanje!");
       }
     });
 
-    // Da se silent refresha strani
-    for(const vprasanje of this.vprasanjaAktivneSeje) {
-      if (vprasanje.id == idVprasanja) {
-        vprasanje.dovoljenjeNapredovanja = true;
-      }
-    }
   }
 
   kreirajSejo(naziv: String) {

@@ -16,7 +16,7 @@
         <h2>Navodila</h2>
         <span [innerHTML]="trenutnoVprasanje.navodilo"></span><br/>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
           Naprej
         </button>
       </div>
@@ -25,7 +25,7 @@
       <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
         <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
         <input class="lg:w-1/4 mx-auto" #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
@@ -35,7 +35,7 @@
         <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
         <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
           Naprej
         </button>
       </div>
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
@@ -80,7 +80,7 @@
         <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
         <span>{{ steviloTock }}</span>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
           Naprej
         </button>
       </div>
