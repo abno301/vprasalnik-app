@@ -5,11 +5,11 @@
 - cd frontend -> ng serve -> Navigiraj do http://localhost:4200/admin oz. http://localhost:4200/sejaId/index
 
 ## Opombe
-- Vprasanja morajo imeti id v1, v2, v2,...
+- Vprasanja morajo imeti obliko po zgledu spodnjega [Primera](#json-primer-vprašanj)
 - Ko admininistrator dovoli napredovanje pri nekem vprašanju, morajo uporabniki osvežiti stran.
-- Zato se zdi dovoljenje napredovanja bolj smiselno uporabiti pri npr. pregledu tock, navodilu (ko je napisano le navodilo).
 - Pri oblikovanju novih vprašanj se zgleduj po zgledu spodnjega [Primera](#json-primer-vprašanj)
-
+- Ne podpira več uporabnikov na enem brskalniku.
+- Ko uporabnik enkrat določi svojo šifro, je več ne more spremeniti.
 
 ## JSON primer vprašanj:
 ```json
