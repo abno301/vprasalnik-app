@@ -15,7 +15,11 @@
       <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.navodila].valueOf()">
         <h2>Navodila</h2>
         <span *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock" [innerHTML]="trenutnoVprasanje.navodilo"></span><br/>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
 
         <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
           Naprej
@@ -31,7 +35,11 @@
             Naprej
           </button>
         </div>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
       </div>
 
 <!--      TEXTAREA-->
@@ -44,7 +52,11 @@
             Naprej
           </button>
         </div>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
       </div>
 
 <!--      RADIOBUTTON-->
@@ -64,7 +76,11 @@
             Naprej
           </button>
         </div>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
       </div>
 
 <!--      CHECKBOX-->
@@ -85,7 +101,11 @@
             Naprej
           </button>
         </div>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
       </div>
 
 <!--      TOCKE-->
@@ -98,7 +118,11 @@
             Naprej
           </button>
         </div>
-        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
+        <ng-template #elseBlock>
+          <div class="mt-8 mb-24">
+            Vprasanje se ni na voljo.
+          </div>
+        </ng-template>
       </div>
     </div>
     <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [hidden]="!jeZadnjeVprasanje" (click)="zakljuci()">Zakljuci</button>
