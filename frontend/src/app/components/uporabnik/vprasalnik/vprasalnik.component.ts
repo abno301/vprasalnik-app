@@ -137,6 +137,7 @@ export class VprasalnikComponent implements OnInit {
           console.log("Shranil kje je uporabnik v vprasalniku.")
         }
       });
+
       let localStorageItem = {
         idUporabnika: this.sifraUporabnika,
         idTrenutnoVprasanje: this.trenutnoVprasanje.id,

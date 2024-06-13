@@ -45,6 +45,11 @@ async function dobiSejo(sejaId) {
 
 async function shraniRezultat(rezultat) {
     try {
+        const odstraniAktivnoVprasanjeRezultat = await db.query(
+            `DELETE FROM aktivnavprasanja WHERE aktivnavprasanja.idUporabnik = ?`,
+            [rezultat.idUporabnika]
+        );
+
         const resultRezultat = await db.query(
         `INSERT INTO rezultat
             (uporabnikId, Seja_idSeja)

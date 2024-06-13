@@ -5,12 +5,13 @@
 - cd frontend -> ng serve -> Navigiraj do http://localhost:4200/admin oz. http://localhost:4200/sejaId/index
 
 ## Opombe
-- Vprasanja morajo imeti id v1, v2, v2,... (poglej spodnji json primer vprasanja)
-- Dovoljenje napredovanja se zdi bolj smiselno uporabiti pri npr. pregledu tock, navodilu (ko je le navodilo),
-saj je potrebno osveziti stran po tem, ko administrator dovoli napredovanje na posameznem vprasanju.
+- Vprasanja morajo imeti id v1, v2, v2,...
+- Ko admininistrator dovoli napredovanje pri nekem vprašanju, morajo uporabniki osvežiti stran.
+- Zato se zdi dovoljenje napredovanja bolj smiselno uporabiti pri npr. pregledu tock, navodilu (ko je napisano le navodilo).
+- Pri oblikovanju novih vprašanj se zgleduj po zgledu spodnjega [Primera](#json-primer-vprašanj)
 
 
-JSON primer:
+## JSON primer vprašanj:
 ```json
 {
   "vprasanja": [
