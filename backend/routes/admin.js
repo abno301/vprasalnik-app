@@ -42,6 +42,7 @@ router.delete('/aktivna-seja', async function(req, res, next) {
   }
 });
 
+/* Dobi pri katerem vprasanju je kateri uporabnik */
 router.get('/aktivna-seja/aktivna-vprasanja', async function(req, res, next) {
   try {
     res.json(await dobiAktivnaVprasanja());
@@ -51,6 +52,7 @@ router.get('/aktivna-seja/aktivna-vprasanja', async function(req, res, next) {
   }
 });
 
+/* Admin dovoli napredovanje pri tem vprasanju */
 router.post('/aktivna-seja/dovoli-vprasanje', async function(req, res, next) {
   try {
     res.json(await spremeniDovoljenjeVprasanja(req.body));

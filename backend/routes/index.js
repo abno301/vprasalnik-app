@@ -9,6 +9,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.options('seja/:sejaId', cors())
+
+/* Dobi sejo iz URL */
 router.get('/seja/:sejaId', cors(), async function (req, res) {
   try {
     res.json(await dobiSejo(req.params.sejaId));
@@ -17,14 +19,16 @@ router.get('/seja/:sejaId', cors(), async function (req, res) {
   }
 });
 
+/* Shrani uporabnikov rezultat */
 router.post('/seja/:sejaId', cors(), async function (req, res) {
   try {
     res.json(await shraniRezultat(req.body));
   } catch (err) {
-    console.error(`Error med dobivanjem seje`, err.message);
+    console.error(`Error med shranjevanjem rezultata`, err.message);
   }
 });
 
+/* Shrani pri katerem vprasanju je uporabnik */
 router.post('/aktivna-vprasanja', cors(), async function (req, res) {
   try {
     res.json(await shraniAktivnoVprasanje(req.body));
