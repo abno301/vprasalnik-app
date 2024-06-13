@@ -14,7 +14,8 @@
 <!--      NAVODILO-->
       <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.navodila].valueOf()">
         <h2>Navodila</h2>
-        <span [innerHTML]="trenutnoVprasanje.navodilo"></span><br/>
+        <span *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock" [innerHTML]="trenutnoVprasanje.navodilo"></span><br/>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
 
         <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" (click)="naslednjeVprasanje('')">
           Naprej
@@ -22,67 +23,82 @@
       </div>
 
 <!--      TEXTBOX-->
-      <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
-        <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
-        <input class="lg:w-1/4 mx-auto" #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
-          Naprej
-        </button>
+      <div class="" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textbox].valueOf()">
+        <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock">
+          <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
+          <input class="lg:w-1/4 mx-auto" #odgovor type="text" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor">
+          <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+            Naprej
+          </button>
+        </div>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
       </div>
 
 <!--      TEXTAREA-->
-      <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textarea].valueOf()">
-        <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
-        <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
+      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.textarea].valueOf()">
+        <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock">
+          <label for="{{ trenutnoVprasanje.idVprasanje }}" [innerHTML]="trenutnoVprasanje.navodilo"></label><br/>
+          <textarea #odgovor type="area" id="{{ trenutnoVprasanje.idVprasanje }}" name="odgovor"></textarea>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
-          Naprej
-        </button>
+          <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje(odgovor.value)">
+            Naprej
+          </button>
+        </div>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
       </div>
 
 <!--      RADIOBUTTON-->
-      <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.radiobutton].valueOf()">
-        <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
-        <div class="mt-2">
-          <div class="flex" *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
-            <div>
-              <input #odgovor type="radio" id="{{ odgovor.id }}" name="radio" value="{{ odgovor.odgovor }}" (click)="radioButtonSelected(odgovor)">
-              <label class="ml-0.5 align-middle" for="{{ odgovor.id }}" [innerHTML]="odgovor.odgovor"></label>
+      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.radiobutton].valueOf()">
+        <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock">
+          <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
+          <div class="mt-2">
+            <div class="flex" *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
+              <div>
+                <input #odgovor type="radio" id="{{ odgovor.id }}" name="radio" value="{{ odgovor.odgovor }}" (click)="radioButtonSelected(odgovor)">
+                <label class="ml-0.5 align-middle" for="{{ odgovor.id }}" [innerHTML]="odgovor.odgovor"></label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
-          Naprej
-        </button>
+          <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+            Naprej
+          </button>
+        </div>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
       </div>
 
 <!--      CHECKBOX-->
-      <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.checkbox].valueOf()">
-        <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
+      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.checkbox].valueOf()">
+        <div class="flex flex-col mt-8 w-11/12 mx-auto" *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock">
+          <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
 
-        <div class="mt-2">
-          <div class="flex" *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
-            <div>
-              <input type="checkbox" id="{{ odgovor.id }}" value="{{ odgovor.odgovor }}" (click)="checkBoxTicked(odgovor)">
-              <label class="ml-0.5 align-middle" for="{{ odgovor.id }}" [innerHTML]="odgovor.odgovor"></label>
+          <div class="mt-2">
+            <div class="flex" *ngFor="let odgovor of trenutnoVprasanje.podaniOdgovori">
+              <div>
+                <input type="checkbox" id="{{ odgovor.id }}" value="{{ odgovor.odgovor }}" (click)="checkBoxTicked(odgovor)">
+                <label class="ml-0.5 align-middle" for="{{ odgovor.id }}" [innerHTML]="odgovor.odgovor"></label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
-          Naprej
-        </button>
+          <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+            Naprej
+          </button>
+        </div>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
       </div>
 
 <!--      TOCKE-->
-      <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.tocke].valueOf()">
-        <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
-        <span>{{ steviloTock }}</span>
+      <div *ngIf="trenutnoVprasanje.tip.toString() == TipVprasanja[TipVprasanja.tocke].valueOf()">
+        <div class="flex flex-col mt-8" *ngIf="trenutnoVprasanje.dovoljenjeNapredovanja;else elseBlock">
+          <span [innerHTML]="trenutnoVprasanje.navodilo"></span>
+          <span>{{ steviloTock }}</span>
 
-        <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
-          Naprej
-        </button>
+          <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [disabled]="!trenutnoVprasanje.dovoljenjeNapredovanja" [hidden]="jeZadnjeVprasanje" (click)="naslednjeVprasanje('odgovor.value')">
+            Naprej
+          </button>
+        </div>
+        <ng-template #elseBlock>Vprasanje se ni na voljo.</ng-template>
       </div>
     </div>
     <button class="border border-black p-2 my-2 rounded w-24 mx-auto bg-white" [hidden]="!jeZadnjeVprasanje" (click)="zakljuci()">Zakljuci</button>

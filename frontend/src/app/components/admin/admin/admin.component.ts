@@ -109,7 +109,7 @@ export class AdminComponent implements OnInit {
 
     this.adminService.spremeniDovoljenjeVprasanja(req).subscribe({
       next: (_) => {
-        console.log("Spremenil vprasanje!");
+        console.log("Vprasanje je zdaj na voljo!");
       }
     });
 
