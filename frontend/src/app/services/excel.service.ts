@@ -7,13 +7,19 @@ import { saveAs } from 'file-saver';
 })
 export class ExcelService {
   constructor() {}
+
+  /**
+   * Funkcija za generiranje Excel datoteke iz podanih podatkov.
+   * @param data - Tabela objektov, kjer vsak uporabnik predstavlja vrstico v Excelu.
+   * @param fileName - Ime datoteke, ki bo ustvarjena (brez končnice).
+   */
   generateExcel(data: any[], fileName: string): void {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
-    // Add headers
+
     const headers = Object.keys(data[0]);
     worksheet.addRow(headers);
-    // Add data
+
     data.forEach((item) => {
       const row: any[] = [];
       headers.forEach((header) => {
@@ -21,7 +27,7 @@ export class ExcelService {
       });
       worksheet.addRow(row);
     });
-    // Save the workbook to a blob
+
     workbook.xlsx.writeBuffer().then((buffer: any) => {
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       saveAs(blob, `${fileName}.xlsx`);

@@ -13,7 +13,6 @@ import {Seja} from "../../../models/admin.model";
   imports: [
     CommonModule
   ],
-  styleUrl: './vprasalnik.component.css'
 })
 export class VprasalnikComponent implements OnInit {
 
@@ -24,13 +23,12 @@ export class VprasalnikComponent implements OnInit {
   jeZadnjeVprasanje: boolean = false;
   jeKonec: boolean = false;
 
+  steviloTock: number = 0;
+  sifraUporabnika: string;
   vprasanja: Vprasanje[];
   trenutnoVprasanje: Vprasanje;
   podaniOdgovori: PodanOdgovor[] = [];
   odgovori: Odgovor[] = [];
-  steviloTock: number = 0;
-  sifraUporabnika: string;
-
   radioButtonOdgovor: PodanOdgovor = new PodanOdgovor();
 
   constructor(private uporabnikService: UporabnikService, private route: ActivatedRoute) {}
@@ -62,6 +60,9 @@ export class VprasalnikComponent implements OnInit {
     });
   }
 
+  /**
+   * Preveri ce je localStorage ze poln => Uporabnik je ze zacel vprasalnik
+   */
   public localStorageNapolnjen(): boolean {
     let storageJSON = localStorage.getItem("storage");
     if (storageJSON != null) {
@@ -137,6 +138,8 @@ export class VprasalnikComponent implements OnInit {
           console.log("Shranil kje je uporabnik v vprasalniku.")
         }
       });
+
+      // Kreiraj oz. update localstorage
       let localStorageItem = {
         idUporabnika: this.sifraUporabnika,
         idTrenutnoVprasanje: this.trenutnoVprasanje.id,
@@ -163,6 +166,9 @@ export class VprasalnikComponent implements OnInit {
     this.radioButtonOdgovor = odgovor;
   }
 
+  /**
+   * Zakljuci vprasalnik za uporabnika.
+   */
   public zakljuci() {
     let rezultat: RezultatDTO = {
       idUporabnika: this.sifraUporabnika,
@@ -170,7 +176,6 @@ export class VprasalnikComponent implements OnInit {
       odgovori: this.odgovori
     }
 
-    // console.log(rezultat);
     this.uporabnikService.zakljuci(rezultat, this.trenutnaSeja.id).subscribe({
       next: (_) => {
         this.jeKonec = true;

@@ -1,6 +1,7 @@
 <div class="text-center">
   <h1 class="text-4xl font-bold">Admin Pogled</h1>
 
+  <!-- Kreiraj novo sejo -->
   <div>
     <div class="mt-6">
       <input
@@ -16,26 +17,28 @@
     </div>
   </div>
 
-  <hr class="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10 w-4/5 mx-auto" />
+  <hr [hidden]="!aktivnaSeja" class="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10 w-4/5 mx-auto" />
 
+  <!-- Trenutna aktivna seja -->
   <div class="border border-black rounded-xl bg-gray-100 py-4 w-1/2 mx-auto mt-10" *ngIf="aktivnaSeja">
     <div class="flex flex-col w-11/12 mx-auto">
       <span class="text-xl font-bold">Trenutna aktivna seja </span>
       <span class="font-semibold mt-2">Naziv: <span class="font-normal">{{ aktivnaSeja.naziv }}</span></span>
       <span class="font-semibold">Kreirana: <span class="font-normal">{{ aktivnaSeja.datum }}</span></span>
       <span class="font-semibold">URL: <span class="font-normal"><a href="http://localhost:4200/{{ aktivnaSeja.id }}/index">http://localhost:4200/{{ aktivnaSeja.id }}/index</a></span></span>
+      <!-- Kartice z vprasanji -->
       <div class="grid grid-cols-2 gap-4 mt-4">
         <div class="flex flex-col border border-black rounded bg-gray-100 pb-2" *ngFor="let vprasanje of vprasanjaAktivneSeje">
           <span class="font-semibold mt-2">Navodilo: <span class="font-normal">{{ vprasanje.idVprasanje }}</span></span>
           <span class="font-semibold">Tip: <span class="font-normal">{{ vprasanje.tip }}</span></span>
-          <!-- uporabniki -->
+          <!-- Trenutni uporabniki vprasanja -->
           <div class="flex flex-col" *ngIf="vprasanje.uporabniki">
             <span class="font-semibold">Uporabniki:</span>
             <span *ngFor="let uporabnik of vprasanje.uporabniki">
               {{ uporabnik }}
             </span>
           </div>
-          <!--        <button class="border border-black mt-4 p-1 rounded w-20 mx-auto bg-white">Izvozi</button>-->
+          <!-- Dovoli napredovanje vprasanja -->
           <button class="border border-black mt-2 p-1 rounded mx-auto bg-white" (click)="dovoliNapredovanje(vprasanje.id)" *ngIf="vprasanje.dovoljenjeNapredovanja == false">
             Dovoli Napredovanje
           </button>
@@ -47,13 +50,14 @@
 
   <hr class="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10 w-4/5 mx-auto" />
 
+  <!-- Zgodovina vseh sej -->
   <div class="flex flex-col mt-10 w-4/5 mx-auto">
     <span class="text-xl font-bold mb-6">Zgodovina Sej</span>
     <div class="grid grid-cols-3 gap-4">
       <div class="flex flex-col border border-black rounded bg-gray-100 pb-2" *ngFor="let seja of vseSeje">
         <span class="font-semibold mt-2">Naziv: <span class="font-normal">{{ seja.naziv }}</span></span>
         <span class="font-semibold">Kreirana: <span class="font-normal">{{ seja.datum }}</span></span>
-        <button class="border border-black mt-4 p-1 rounded w-28 mx-auto bg-white" (click)="izvoziExcel(seja, seja.naziv)">Izvozi Excel</button>
+        <button class="border border-black mt-4 p-1 rounded w-28 mx-auto bg-white" (click)="izvoziExcel(seja)">Izvozi Excel</button>
       </div>
     </div>
   </div>

@@ -12,6 +12,7 @@
 - Ko uporabnik enkrat določi svojo šifro, je več ne more spremeniti.
 
 ## JSON primer vprašanj:
+V `frontend/src/assets/vprasanja.json` se nahaja primer JSON datoteke
 ```json
 {
   "vprasanja": [
