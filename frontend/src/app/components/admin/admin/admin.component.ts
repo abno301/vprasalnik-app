@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Vprasanja, Vprasanje} from "../../../models/uporabnik.model";
-import {Seja, SejaDTO} from "../../../models/admin.model";
+import {RezultatExcel, Seja, SejaDTO} from "../../../models/admin.model";
 import {AdminService} from "../../../services/admin.service";
 import {AsyncPipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
-import {Observable, switchMap, take, tap} from "rxjs";
+import {switchMap} from "rxjs";
 import fileSaver from "file-saver";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
+import {ExcelService} from "../../../services/excel.service";
 
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -36,7 +37,9 @@ export class AdminComponent implements OnInit {
 
   downloadJsonHref: SafeUrl;
 
-  constructor(private adminService: AdminService, private sanitizer: DomSanitizer) {}
+  constructor(private adminService: AdminService,
+              private excelService: ExcelService,
+              private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.adminService.dobiAktivnoSejo().pipe(
@@ -74,7 +77,6 @@ export class AdminComponent implements OnInit {
     this.adminService.dobiSeje().subscribe({
       next: (seje) => {
         this.vseSeje = seje;
-        this.generateDownloadJsonUri();
       }
     });
   }
@@ -141,21 +143,37 @@ export class AdminComponent implements OnInit {
     })
   }
 
-  izvoziExcel(json: Seja, excelFileName: string): void {
-    console.log(json);
-    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    // const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    // this.shraniExcel(excelBuffer, excelFileName);
-  }
+  izvoziExcel(seja: Seja, excelFileName: string): void {
+    let data = []
 
-  private shraniExcel(buffer: any, fileName: string): void {
-    const data: Blob = new Blob([buffer], {type: EXCEL_TYPE});
-    fileSaver.saveAs(data, fileName + '_export_' + new  Date().getTime() + EXCEL_EXTENSION);
-  }
+    for (let rezultat of seja.rezultati) {
+      let rezultatData: RezultatExcel = {
+        idUporabnika: rezultat.uporabnikId
+      }
+      let odgovoriObject = [];
 
-  generateDownloadJsonUri() {
-    const theJSON = JSON.stringify(this.vseSeje);
-    this.downloadJsonHref = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+      odgovoriObject.push(Object.assign({}, rezultatData));
+      for (let odgovor of rezultat.odgovori) {
+        let vprasanjeId = odgovor.idVprasanja;
+        let object = {}
+        // @ts-ignore
+        object[vprasanjeId] = odgovor.odgovor;
+        odgovoriObject.push(Object.assign({}, object));
+      }
+      data.push(Object.assign({}, odgovoriObject))
+    }
+
+    let transformedData = [];
+    for (let item of data) {
+      let transformedItem = {}
+      for (let key in item) {
+        let innerKey = Object.keys(item[key])[0];
+        // @ts-ignore
+        transformedItem[innerKey] = item[key][innerKey];
+      }
+      transformedData.push(transformedItem);
+    }
+
+    this.excelService.generateExcel(transformedData, seja.naziv + "_" + seja.datum);
   }
 }

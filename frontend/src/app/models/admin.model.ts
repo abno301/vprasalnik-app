@@ -19,3 +19,7 @@ export interface AktivnoVprasanje {
   idUporabnik: String,
   idVprasanje: number
 }
+
+export interface RezultatExcel {
+  idUporabnika: String
+}

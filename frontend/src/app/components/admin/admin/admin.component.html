@@ -54,7 +54,6 @@
         <span class="font-semibold mt-2">Naziv: <span class="font-normal">{{ seja.naziv }}</span></span>
         <span class="font-semibold">Kreirana: <span class="font-normal">{{ seja.datum }}</span></span>
         <button class="border border-black mt-4 p-1 rounded w-28 mx-auto bg-white" (click)="izvoziExcel(seja, seja.naziv)">Izvozi Excel</button>
-        <a class="border border-black mt-2 p-1 rounded w-28 mx-auto bg-white" [href]="downloadJsonHref" download="download.json">Izvozi JSON</a>
       </div>
     </div>
   </div>
