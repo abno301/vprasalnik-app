@@ -95,7 +95,6 @@ async function ustvariVprasanje(sejaId, vprasanje) {
             await ustvariPodanOdgovor(result.insertId, odgovor);
         }
     }
-    // console.log(message);
 }
 
 async function ustvariPodanOdgovor(vprasanjeId, odgovor) {
@@ -105,13 +104,7 @@ async function ustvariPodanOdgovor(vprasanjeId, odgovor) {
             VALUES (?, ?, ?, ?)`,
         [odgovor.id, odgovor.zapis, odgovor.tocke || null, vprasanjeId]
     );
-    let message = "Error med dodajanjem moznega odgovora vprasanja.";
 
-    if (result.affectedRows) {
-        message = "Mozen odgovor vprasanja dodan!";
-    }
-
-    // console.log(message);
 }
 
 async function dobiAktivnoSejo() {
@@ -169,7 +162,7 @@ async function zbrisiAktivnoSejo() {
         `DELETE FROM aktivnaseja`
     );
 
-    const resultVprasanja = await db.query(
+    await db.query(
         `DELETE FROM aktivnavprasanja`
     );
 

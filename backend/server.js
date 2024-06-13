@@ -8,12 +8,6 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-// const corsOptions = {
-//     origin: "http://localhost:4200",
-// };
-
-// app.options('*', cors());
-// app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -29,11 +23,12 @@ app.use((err, req, res, next) => {
     res.status(statusCode).json({ message: err.message });
 });
 
+// Defaultni endpoint
 app.get("/", (req, res) => {
     res.json({message: "Dobrodosli v Plohl app."});
 });
 
-// set port, listen for requests
+// Nastavi port, cakaj na zahteve
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
